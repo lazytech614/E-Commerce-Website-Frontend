@@ -1,0 +1,81 @@
+import React, {useState, useContext} from 'react'
+import { navItems } from '../../constants/navItems'
+import cartIcon from "/cart_icon.png"
+import {Link} from "react-router-dom"
+import { IoIosMenu } from "react-icons/io";
+import { Sidebar } from './Sidebar'
+import { useNavigate } from 'react-router-dom'
+import { ShopContext } from '../../contexts/ShopContext';
+
+
+export const Navbar = () => {
+    const [navItem, setNavItem] = useState("Shop");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+    const navigate = useNavigate();
+
+    const {cartCount} = useContext(ShopContext);
+
+    const handleNavItemClick = (item) => {
+        setNavItem(item)
+    }
+
+    const handleToggleMenuClick = () => {
+        setIsSidebarOpen(!isSidebarOpen)
+    }
+
+    const handleSignInClick = () => {
+        navigate("/login")
+    }
+
+    const handleSignUpClick = () => {
+        navigate("/signup")
+    }
+
+    const handleCartClick = () => {
+        navigate("/cart")
+    }
+
+    return (
+        <>
+            {isSidebarOpen && (
+                <Sidebar handleToggleMenuClick={handleToggleMenuClick} navItem={navItem} handleNavItemClick={handleNavItemClick}/>
+            )}  
+            <header className='sticky top-0 z-[100] custom-backdrop flex justify-between items-center px-4 sm:px-10 md:px-20 py-2 sm:py-4 shadow-custom'>
+                <div className='flex items-center gap-2 sm:gap-4'>
+                    <IoIosMenu onClick={handleToggleMenuClick} className='lg:hidden text-[30px] sm:text-[40px] cursor-pointer'/>
+                    <Link to="/" onClick={() => handleNavItemClick("Shop")} className='flex items-end gap-2 cursor-pointer'>
+                        <img className='w-[40px] sm:w-[60px]' src='/logo.png' alt='logo' />
+                        <span className='hidden sm:block uppercase text-3xl text-[#171717] font-semibold'>shopper</span>
+                    </Link>
+                </div>
+                <nav className='hidden lg:block'>
+                    <ul className='flex items-center gap-8 text-[20px] text-[#626262] font-medium'>
+                        {navItems.map((item) => (
+                            <li key={item.id}>
+                                <Link to={item.text.toLocaleLowerCase()}>
+                                    <button onClick={() => handleNavItemClick(item.text)} className='relative'>
+                                    {item.text}
+                                    <hr className={`absolute bottom-[-6px] left-[50%] translate-x-[-50%] w-[80%] h-[3px] rounded-[10px] bg-[#FF4141] ${navItem === item.text ? "block" : "hidden"}`}/>
+                                    </button>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <div className='flex items-center gap-2 sm:gap-6'>
+                    <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151]  font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                        sign up
+                    </button>
+                    <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151]  font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                        sign in
+                    </button>
+                    <div onClick={handleCartClick} className='relative cursor-pointer '>
+                        <img className=' w-[30px]' src={cartIcon} alt='cart' />
+                        <span className='absolute top-[-2px] right-[-4px] bg-[red] text-white text-xs h-[18px] w-[18px] sm:h-[22px] sm:w-[22px] flex justify-center items-center rounded-full'>{cartCount}</span>
+                    </div>
+                </div>
+            </header>
+        </>
+    )
+}
