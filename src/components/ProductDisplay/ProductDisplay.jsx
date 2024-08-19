@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import star_icon from '/star_icon.png';
 import star_dull_icon from '/star_dull_icon.png';
 import { sizesList } from '../../constants/sizes';
@@ -7,13 +9,13 @@ import { SELECT_SIZE } from '../../constants/errorMessages';
 
 export const ProductDisplay = (props) => {
     const { product } = props;
-    const { addToCart, setSelectedSize } = useContext(ShopContext);
+    const { addToCart, setSizeForItem, formatIndianNumber } = useContext(ShopContext);
     const [size, setSize] = useState("");
     const [errors, setErrors] = useState({});
 
     const handleClick = (selectedSize) => {
         setSize(selectedSize);
-        setSelectedSize(product.id, selectedSize);
+        setSizeForItem(product.id, selectedSize); // Update size in context
         setErrors((prevErrors) => ({
             ...prevErrors,
             size: ""
@@ -27,18 +29,18 @@ export const ProductDisplay = (props) => {
     }
 
     const handleAddToCart = () => {
-        // console.log(product.id);
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         } else {
             addToCart(product.id);
+            toast.success("Product added to the cart");
         }
     }
 
     return (
-        <div className='px-4 sm:px-10 md:px-20 my-10 flex flex-col sm:flex-row gap-y-10 gap-2 lg:gap-4'>
+        <div className='px-4 sm:px-10 md:px-20 my-10 flex flex-col sm:flex-row gap-y-10 gap-2 lg:gap-4 '>
             <div className='sm:w-[60%] flex flex-col-reverse justify-end lg:flex-row items-center gap-4'>
                 <div className='flex lg:flex-col items-center justify-center gap-2 lg:gap-4'>
                     <img className='w-[80px] lg:w-auto lg:h-[163px] cursor-pointer' src={product.image} alt='image' />
@@ -61,8 +63,8 @@ export const ProductDisplay = (props) => {
                     <p>(122)</p>
                 </div>
                 <div className='flex gap-2 lg:mt-2 text-[24px] font-bold'>
-                    <div className='line-through text-[#8c8c8c]'>${product.old_price}</div>
-                    <div className='text-[#ff4141]'>${product.new_price}</div>
+                    <div className='line-through text-[#8c8c8c]'>{formatIndianNumber(product.old_price)}</div>
+                    <div className='text-[#ff4141]'>Rs. {formatIndianNumber(product.new_price)}</div>
                 </div>
                 <div className='mt-4 lg:mt-8'>
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto necessitatibus esse accusantium, error sed exercitationem nesciunt inventore beatae optio officiis vero sequi quisquam, nulla ut ipsam recusandae? Reiciendis, veniam eveniet?
@@ -70,7 +72,7 @@ export const ProductDisplay = (props) => {
                 <div className='relative my-4 lg:my-10'>
                     <p className='text-[#656565] text-[18px] lg:text-[20px] capitalize font-semibold'>select size</p>
                     <div className='flex flex-wrap gap-2 mt-2 uppercase'>
-                        {sizesList.map((item) => (
+                        {product.sizes.map((item) => (
                             <div 
                                 key={item.id}
                                 onClick={() => handleClick(item.size)} 
@@ -102,6 +104,7 @@ export const ProductDisplay = (props) => {
                     <p><span className='font-semibold'>Tag: </span>tag1, tag2, tag3</p>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

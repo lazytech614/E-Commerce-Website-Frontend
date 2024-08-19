@@ -13,8 +13,8 @@ const getDefaultCart = () => {
         return storedCart;
     }
     let cart = {};
-    for (let i = 0; i < all_product.length; i++) {
-        cart[i] = 0;
+    for (let i = 1; i < all_product.length + 1; i++) {
+        cart[i] = { quantity: 0, size: "not selected" }; // Initialize with size "not selected"
     }
     return cart;
 }
@@ -46,6 +46,21 @@ const startOfferTimer = (endTime, setTimer) => {
     return interval;
 }
 
+function formatIndianNumber(number) {
+    let numStr = number.toString().replace(/[^0-9]/g, '');
+
+    let [integerPart, decimalPart] = numStr.split('.');
+
+    let lastThreeDigits = integerPart.slice(-3);
+    let otherDigits = integerPart.slice(0, -3);
+    if (otherDigits !== '') {
+        lastThreeDigits = ',' + lastThreeDigits;
+    }
+    let formattedInteger = otherDigits.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThreeDigits;
+
+    return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+}
+
 const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState(getDefaultCart());
     const [offerTimer, setOfferTimer] = useState("");
@@ -54,26 +69,44 @@ const ShopContextProvider = (props) => {
     const [selectedSizes, setSelectedSizes] = useState({});
 
     const addToCart = (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
+        setCartItems((prev) => ({ 
+            ...prev, 
+            [itemId]: { 
+                ...prev[itemId], 
+                quantity: (prev[itemId].quantity || 0) + 1 
+            }
+        }));
     }
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: Math.max(0, (prev[itemId] || 0) - 1) }));
+        setCartItems((prev) => ({ 
+            ...prev, 
+            [itemId]: { 
+                ...prev[itemId], 
+                quantity: Math.max(0, (prev[itemId].quantity || 0) - 1) 
+            }
+        }));
+    }
+
+    const setSizeForItem = (itemId, size) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: {
+                ...prev[itemId],
+                size
+            }
+        }));
     }
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
         for(const item in cartItems){
-            if(cartItems[item] > 0){
+            if(cartItems[item].quantity > 0){
                 let itemInfo = all_product.find((product) => product.id === Number(item))
-                totalAmount += itemInfo.new_price * cartItems[item]
+                totalAmount += itemInfo.new_price * cartItems[item].quantity
             }
         }
         return totalAmount;
-    }
-
-    const setSelectedSize = (itemId, size) => {
-        setSelectedSizes((prevSizes) => ({ ...prevSizes, [itemId]: size }));
     }
 
     useEffect(() => {
@@ -104,8 +137,8 @@ const ShopContextProvider = (props) => {
 
     useEffect(() => {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-        const totalCount = Object.values(cartItems).reduce((acc, quantity) => {
-            return acc + (typeof quantity === 'number' ? quantity : 0);
+        const totalCount = Object.values(cartItems).reduce((acc, item) => {
+            return acc + (item.quantity || 0);
         }, 0);
         setCartCount(totalCount);
     }, [cartItems]);
@@ -120,7 +153,8 @@ const ShopContextProvider = (props) => {
         cartCount,
         getTotalCartAmount,
         selectedSizes,
-        setSelectedSize
+        setSizeForItem, 
+        formatIndianNumber
     };
 
     return (

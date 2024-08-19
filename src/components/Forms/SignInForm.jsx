@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, EMAIL_REQUIRED, PASSWORD_REQUIRED, GENDER_REQUIRED } from '../constants/errorMessages'
-import CustomDropdown from '../components/CustomDropDown/CustomDropDown'
-
-export const Login = () => {
+import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, PASSWORD_REQUIRED } from '../../constants/errorMessages'
+import close_icon from '/red_close_icon.svg'
+export const SignInForm = ({setIsOpenSignInModal}) => {
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,12 +33,16 @@ export const Login = () => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
+    }else{
+      setIsOpenSignInModal(false)
     }
   }
 
   return (
-    <div className='w-[100%]  py-[40px] bg-custom-gradient'>
-      <div className='w-[80%] sm:w-[600px] mx-auto p-[20px] sm:p-[40px] bg-white  flex flex-col'>
+      <div className='fixed z-[999] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] sm:w-[600px] mx-auto p-[20px] sm:p-[40px] bg-white  flex flex-col'>
+        <div onClick={() => setIsOpenSignInModal(false)} className='w-[20px] sm:w-[30px] absolute right-[20px] sm:right-[40px] cursor-pointer'>
+            <img className='w-full' src={close_icon} alt='cross' />
+        </div>
         <h1 className='text-center text-[22px] sm:text-[28px] text-[#171717] capitalize font-semibold'>sign in</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-[20px] sm:gap-[30px] mt-[20px] bg-transparent'>
           <div className='relative'>
@@ -97,6 +100,5 @@ export const Login = () => {
           <p>Keep me signed in</p>
         </div>
       </div>
-    </div>
   )
 }

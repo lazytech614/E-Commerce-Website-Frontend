@@ -6,11 +6,15 @@ import { IoIosMenu } from "react-icons/io";
 import { Sidebar } from './Sidebar'
 import { useNavigate } from 'react-router-dom'
 import { ShopContext } from '../../contexts/ShopContext';
+import { SignUpModal } from '../Modal/SignUpModal';
+import { SignInModal } from '../Modal/SignInModal';
 
 
 export const Navbar = () => {
     const [navItem, setNavItem] = useState("Shop");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const [isOpenSignUpModal, setIsOpenSignUpModal] = useState(false);
+    const [isOpenSignInModal, setIsOpenSignInModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -25,11 +29,11 @@ export const Navbar = () => {
     }
 
     const handleSignInClick = () => {
-        navigate("/login")
+        setIsOpenSignInModal(true)
     }
 
     const handleSignUpClick = () => {
-        navigate("/signup")
+        setIsOpenSignUpModal(true)
     }
 
     const handleCartClick = () => {
@@ -37,11 +41,11 @@ export const Navbar = () => {
     }
 
     return (
-        <>
+        <div className='sticky top-0 z-[100]'>
             {isSidebarOpen && (
                 <Sidebar handleToggleMenuClick={handleToggleMenuClick} navItem={navItem} handleNavItemClick={handleNavItemClick}/>
             )}  
-            <header className='sticky top-0 z-[100] custom-backdrop flex justify-between items-center px-4 sm:px-10 md:px-20 py-2 sm:py-4 shadow-custom'>
+            <header className='sticky top-0 custom-backdrop flex justify-between items-center px-4 sm:px-10 md:px-20 py-2 sm:py-4 shadow-custom'>
                 <div className='flex items-center gap-2 sm:gap-4'>
                     <IoIosMenu onClick={handleToggleMenuClick} className='lg:hidden text-[30px] sm:text-[40px] cursor-pointer'/>
                     <Link to="/" onClick={() => handleNavItemClick("Shop")} className='flex items-end gap-2 cursor-pointer'>
@@ -76,6 +80,8 @@ export const Navbar = () => {
                     </div>
                 </div>
             </header>
-        </>
+            <SignUpModal isOpenSignUpModal={isOpenSignUpModal} setIsOpenSignUpModal={setIsOpenSignUpModal}/>
+            <SignInModal isOpenSignInModal={isOpenSignInModal} setIsOpenSignInModal={setIsOpenSignInModal}/>
+        </div>
     )
 }

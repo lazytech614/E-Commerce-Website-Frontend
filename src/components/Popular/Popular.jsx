@@ -7,7 +7,7 @@ export const Popular = () => {
     <div>
         <PopularItems name="women" list={latestProductWomen}/>
         <PopularItems name="men" list={latestProductMen}/>
-        <PopularItems name="kid" list={latestProductKids}/>
+        <PopularItems name="kids" list={latestProductKids}/>
     </div>
   )
 }

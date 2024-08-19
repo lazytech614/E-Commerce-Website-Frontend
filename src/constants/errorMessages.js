@@ -29,4 +29,4 @@ export const PROFESSIONAL_IMAGE = "Please upload your professional image";
 export const MINIMUM_LENGTH_PHONE = "Please enter a valid phone number";
 export const USERNAME_REQUIRED = "Username is required";
 export const ENTER_THE_PROMO_CODE_FIRST = "Please enter e promo code";
-export const SELECT_SIZE = "Please select youe size";
+export const SELECT_SIZE = "Please select your size";

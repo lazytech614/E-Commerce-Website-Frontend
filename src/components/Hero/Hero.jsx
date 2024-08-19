@@ -1,9 +1,21 @@
 import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import hand_icon from '/hand_icon.png';
 import arrow from '/arrow.png';
 import hero_image from '/hero_image.png';
 
 export const Hero = () => {
+
+  const navigate= useNavigate()
+
+  const handleClick = () => {
+    navigate('/latestCollections')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   return (
     <div className="sm:min-h-[90vh] flex  md:flex-row items-center bg-custom-gradient px-4 sm:px-10 md:px-20 py-6">
       <div className=" flex w-[100%] sm:w-[70%] flex-col justify-center gap-[25px] lg:gap-[40px]">
@@ -18,7 +30,7 @@ export const Hero = () => {
           <p>collections</p>
           <p className='text-nowrap'>for everyone</p>
         </div>
-        <div className="w-[130px] h-[30px] sm:w-[260px] sm:h-[60px] lg:w-[310px] lg:h-[70px] rounded-[70px] flex items-center justify-center gap-1 sm:gap-4 sm:hover:gap-6 duration-300 cursor-pointer font-medium text-white text-[10px] sm:text-[16px] lg:text-[22px] bg-[#ff4141]">
+        <div onClick={handleClick} className="w-[130px] h-[30px] sm:w-[260px] sm:h-[60px] lg:w-[310px] lg:h-[70px] rounded-[70px] flex items-center justify-center gap-1 sm:gap-4 sm:hover:gap-6 duration-300 cursor-pointer font-medium text-white text-[10px] sm:text-[16px] lg:text-[22px] bg-[#ff4141]">
           <p>Latest collections</p>
           <img className='w-[12px] sm:w-[28px]' src={arrow} alt="" />
         </div>

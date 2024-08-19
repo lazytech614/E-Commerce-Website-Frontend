@@ -4,7 +4,7 @@ import arrow from "/arrow.png"
 
 export const Offer = () => {
   return (
-    <div className='sm:min-h-[60vh] px-4 sm:px-10 md:px-20 py-4 sm:py-0 mt-[20px] sm:mt-0 flex items-center justify-between bg-custom-gradient'>
+    <div className='sm:min-h-[60vh] px-4 sm:px-10 md:px-20 py-4 sm:py-0 mt-[60px] sm:mt-0 flex items-center justify-between bg-custom-gradient'>
         <div className='flex flex-col justify-center items-start text-[#171717] text-[30px] sm:text-[60px] lg:text-[80px] capitalize font-semibold leading-[30px] sm:leading-[60px] lg:leading-[80px]'>
             <p>exclusive</p>
             <p>Offers for you</p>
