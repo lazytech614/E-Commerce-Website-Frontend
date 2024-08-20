@@ -50,7 +50,7 @@ export const Navbar = () => {
                     <IoIosMenu onClick={handleToggleMenuClick} className='lg:hidden text-[30px] sm:text-[40px] cursor-pointer'/>
                     <Link to="/" onClick={() => handleNavItemClick("Shop")} className='flex items-end gap-2 cursor-pointer'>
                         <img className='w-[40px] sm:w-[60px]' src='/logo.png' alt='logo' />
-                        <span className='hidden sm:block uppercase text-3xl text-[#171717] font-semibold'>shopper</span>
+                        <span className='hidden sm:block uppercase text-3xl text-[#ff4141] font-semibold'>shopper</span>
                     </Link>
                 </div>
                 <nav className='hidden lg:block'>
@@ -58,7 +58,7 @@ export const Navbar = () => {
                         {navItems.map((item) => (
                             <li key={item.id}>
                                 <Link to={item.text.toLocaleLowerCase()}>
-                                    <button onClick={() => handleNavItemClick(item.text)} className='relative'>
+                                    <button onClick={() => handleNavItemClick(item.text)} className={`relative ${navItem === item.text ? "text-[#ff4141] font-semibold" : ""}`}>
                                     {item.text}
                                     <hr className={`absolute bottom-[-6px] left-[50%] translate-x-[-50%] w-[80%] h-[3px] rounded-[10px] bg-[#FF4141] ${navItem === item.text ? "block" : "hidden"}`}/>
                                     </button>

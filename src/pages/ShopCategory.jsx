@@ -44,7 +44,6 @@ export const ShopCategory = (props) => {
         <div className='flex justify-between items-center my-[70px]'>
           <p className='text-[12px] sm:text-[16px]'><span className='font-semibold'>Showing 1-12</span> out of 36 products</p>
           <div className='w-[100px] sm:w-[200px]'>
-            {/* Sort by <img className='w-[10px] sm:w-[16px]' src={dropdown_icon} alt='dropdown icon' /> */}
             <CustomDropdown 
               name='sort'
               value={formData.sort}
@@ -57,7 +56,7 @@ export const ShopCategory = (props) => {
               ]}/>
           </div>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 gap-y-6'>
+        <div className='grid grid-cols-2 sm:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-8'>
           {all_product.map((item) => {
             if(props.category === item.category){
               return (

@@ -88,7 +88,7 @@ export const CartItems = () => {
                 <div className='w-[100%] h-[2px] bg-[#D9D9D9] my-2'></div>
                 <div className='flex justify-between py-[16px]'>
                   <p>Total</p>
-                  <p>Rs. {formatIndianNumber(getTotalCartAmount())}</p>
+                  <p className='text-[#ff4141] font-semibold'>Rs. {formatIndianNumber(getTotalCartAmount())}</p>
                 </div>
               </div>
               <button className='w-[262px] h-[58px] bg-[#ff4141] text-white font-semibold cursor-pointer'>Proceed to Checkout</button>
