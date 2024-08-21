@@ -4,7 +4,6 @@ import close_icon from '/red_close_icon.svg'
 export const SignInForm = ({setIsOpenSignInModal}) => {
 
   const [formData, setFormData] = useState({
-    name: "",
     phone: "",
     password: ""
   })
@@ -20,20 +19,38 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = FULL_NAME_REQUIRED;
     if (!formData.phone) newErrors.phone = PHONE_NUMBER_REQUIRED;
     if (formData.phone.length < 10 && formData.phone.length>0) newErrors.phone = MINIMUM_LENGTH_PHONE;
     if (!formData.password) newErrors.password = PASSWORD_REQUIRED;
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }else{
+      let responseData;
+      await fetch('http://localhost:4000/signin', {
+        method: 'POST',
+        headers: {
+          Accept: "application/form-data",
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+      .then((res) => res.json())
+      .then((data) => responseData = data)
+
+      if(responseData.success){
+        console.log("User logged in succesfully");
+        localStorage.setItem("authToken", responseData.token);
+        window.location.replace("/");
+      }else{
+        console.log(responseData.error);
+      }
       setIsOpenSignInModal(false)
     }
   }
@@ -45,20 +62,6 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
         </div>
         <h1 className='text-center text-[22px] sm:text-[28px] text-[#171717] capitalize font-semibold'>sign in</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-[20px] sm:gap-[30px] mt-[20px] bg-transparent'>
-          <div className='relative'>
-            <input 
-              type='text'
-              placeholder='Name'
-              name='name'
-              value={formData.name}
-              onChange={handleChange}
-              errors={errors.name}
-              className='h-[40px] sm:h-[60px] w-[100%] px-4 border border-[#c9c9c9] text-[#5c5c5c] text-[14px] sm:text-[16px] outline-none bg-transparent'
-            />
-            {errors.name && (
-              <span className='absolute bottom-[-16px] sm:bottom-[-20px] left-0 text-[10px] sm:text-[12px] text-[#ff4141]'>{errors.name}</span>
-            )}
-          </div>
           <div className='relative'>
             <input 
               type="tel"

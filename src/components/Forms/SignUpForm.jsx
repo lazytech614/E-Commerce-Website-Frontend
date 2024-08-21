@@ -33,14 +33,34 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }else{
-        setIsOpenSignUpModal(false)
+      console.log("Formdata", formData);
+      let responseData;
+      await fetch('http://localhost:4000/signup', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/form-data',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then((res) => res.json())
+      .then((data) => responseData = data)
+
+      if(responseData.success){
+        console.log("User logged in succesfully");
+        localStorage.setItem("authToken", responseData.token);
+        window.location.replace("/");
+      }else{
+        console.log(responseData.error);
+      }
+      setIsOpenSignUpModal(false)
     }
   }
 
