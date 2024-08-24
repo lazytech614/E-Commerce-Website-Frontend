@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 export const SignUpForm = ({setIsOpenSignUpModal, setIsOpenSignInModal}) => {
-  const baseURL = 'http://localhost:4000'
+  const baseURL = 'https://e-commerce-website-backend-uldm.onrender.com'
 
   const [formData, setFormData] = useState({
     name: "",
