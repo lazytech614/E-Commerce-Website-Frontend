@@ -3,7 +3,7 @@ import { Item } from '../Item/Item'
 import { useNavigate } from 'react-router-dom'
 
 export const PopularItems = (props) => {
-  const baseURL = 'http://localhost:4000'
+  const baseURL = 'https://e-commerce-website-backend-uldm.onrender.com'
 
   const [popular, setpopular] = useState([]);
 
