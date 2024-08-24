@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, EMAIL_REQUIRED, PASSWORD_REQUIRED, GENDER_REQUIRED } from '../../constants/errorMessages'
+import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, EMAIL_REQUIRED, PASSWORD_REQUIRED, GENDER_REQUIRED, TERMS_AND_POLICY } from '../../constants/errorMessages'
 import CustomDropdown from '../CustomDropDown/CustomDropDown'
 import close_icon from '/red_close_icon.svg'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
-export const SignUpForm = ({setIsOpenSignUpModal}) => {
+export const SignUpForm = ({setIsOpenSignUpModal, setIsOpenSignInModal}) => {
+  const baseURL = 'http://localhost:4000'
 
   const [formData, setFormData] = useState({
     name: "",
@@ -14,10 +15,14 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
     gender: "",
     password: ""
   })
+  const [isChecked, setIsChecked] = useState(false)
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
     const {name, value} = e.target;
+    if(name === "checkbox"){
+      setIsChecked(!isChecked)
+    }
     setFormData({ ...formData, [name]: value })
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -33,6 +38,7 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
     if (!formData.password) newErrors.password = PASSWORD_REQUIRED;
     if (!formData.gender && formData.gender === "")
       newErrors.gender = GENDER_REQUIRED;
+    if(!isChecked) newErrors.checkbox = TERMS_AND_POLICY
     return newErrors;
   };
 
@@ -42,10 +48,11 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
+    }else if(!isChecked){
+      console.log("Please check");
     }else{
-      console.log("Formdata", formData);
       let responseData;
-      await fetch('http://localhost:4000/signup', {
+      await fetch(`${baseURL}/signup`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -57,18 +64,18 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
       .then((data) => responseData = data)
 
       if(responseData.success){
-        console.log("User logged in succesfully");
-        // toast.success("Account created succesfully")
         localStorage.setItem("authToken", responseData.token);
-        // window.location.replace("/");
       }else{
-        console.log(responseData.error);
         toast.error(responseData.error)
       }
       setIsOpenSignUpModal(false)
     }
   }
 
+  const handleClick = () => {
+    setIsOpenSignUpModal(false)
+    setIsOpenSignInModal(true)
+  }
   return (
     <div className='fixed z-[999] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%] sm:w-[600px] mx-auto p-[20px] sm:p-[40px] bg-white  flex flex-col'>
         <div onClick={() => setIsOpenSignUpModal(false)} className='w-[20px] sm:w-[30px] absolute right-[20px] sm:right-[40px] cursor-pointer'>
@@ -156,10 +163,13 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
           </div>
           <button className='w-[100%] h-[40px] sm:h-[60px] bg-[#ff4141] text-white sm:text-[24px] cursor-pointer'>Submit</button>
         </form>
-        <p className='mt-[20px] text-[#5c5c5c] text-[10px] sm:text-[16px]'>Already have an account <span className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>sign in here</span></p>
-        <div className='flex gap-2 items-start sm:items-center text-[#5c5c5c] text-[10px] sm:text-[16px]'>
-          <input className='mt-1 sm:mt-0 cursor-pointer' type='checkbox' name='' id=''/>
+        <p onClick={handleClick} className='mt-[20px] text-[#5c5c5c] text-[10px] sm:text-[16px]'>Already have an account <span className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>sign in here</span></p>
+        <div className='relative flex gap-2 items-start sm:items-center text-[#5c5c5c] text-[10px] sm:text-[16px]'>
+          <input onChange={handleChange} className='mt-1 sm:mt-0 cursor-pointer' type='checkbox' name='checkbox' id='checkbox'/>
           <p>By continuing, I agree to the <span className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>terms of use & privacy policy</span></p>
+          {errors.checkbox && (
+            <span className='absolute bottom-[-16px] text-[10px] sm:text-[12px] text-[#ff4141]'>{errors.checkbox}</span>
+          )}
         </div>
     </div>
   )

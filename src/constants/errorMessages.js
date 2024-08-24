@@ -30,3 +30,5 @@ export const MINIMUM_LENGTH_PHONE = "Please enter a valid phone number";
 export const USERNAME_REQUIRED = "Username is required";
 export const ENTER_THE_PROMO_CODE_FIRST = "Please enter e promo code";
 export const SELECT_SIZE = "Please select your size";
+export const TERMS_AND_POLICY =
+  "Please read all the terms and policy and mark the checkbox";

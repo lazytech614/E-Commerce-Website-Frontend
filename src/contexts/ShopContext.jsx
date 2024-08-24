@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
-const TIME_INTERVAL_FOR_OFFER_CHANGE = Number(import.meta.env.VITE_TIME_INTERVAL_FOR_OFFER_CHANGE);
 const CART_STORAGE_KEY = import.meta.env.VITE_CART_ITEMS_KEY;
+const baseURL = 'http://localhost:4000'
 
 export const ShopContext = createContext(null);
 
@@ -12,7 +11,7 @@ const getDefaultCart = () => {
         return storedCart;
     }
     let cart = {};
-    for (let i = 1; i < 10 + 1; i++) {
+    for (let i = 1; i < 300 + 1; i++) {
         cart[i] = 0;
     }
     return cart;
@@ -44,7 +43,7 @@ const ShopContextProvider = (props) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:4000/allproducts', { method: 'GET' });
+                const response = await fetch(`${baseURL}/allproducts`, { method: 'GET' });
                 const data = await response.json();
                 setAll_Product(data); // Set the products in state
             } catch (error) {
@@ -54,33 +53,34 @@ const ShopContextProvider = (props) => {
         fetchProducts();
 
         const getCartData = () => {
-            fetch('http://localhost:4000/getcartdata', {
-                method: 'POST',
-                headers: {
-                    Accept: "application/form-data",
-                    "authToken": `${localStorage.getItem("authToken")}`,
-                    "Content-Type": "application/json"
-                },
-                body: ""
-            })
-            .then((res) => res.json())
-            .then((data) => setCartItems(data))
+            if(localStorage.getItem("authToken")){
+                try{
+                    fetch(`${baseURL}/getcartdata`, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/form-data',
+                            authToken: `${localStorage.getItem("authToken")}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: ''
+                    })
+                    .then((res) => res.json())
+                    .then((data) => setCartItems(data))
+                }catch(err){
+                    console.log("Error fetching cart data", err);
+                }
+            }
         }
-        if(localStorage.getItem("authToken")){
-            getCartData()
-        }
+        getCartData()
     }, []); 
 
-    const addToCart = (itemId) => {
+    const addToCart = async(itemId) => {
         setCartItems((prev) => ({
             ...prev,
-            [itemId]: {
-                ...prev[itemId],
-                quantity: (prev[itemId].quantity || 0) + 1
-            }
+            [itemId]: prev[itemId] + 1
         }));
         if(localStorage.getItem("authToken")){
-            fetch('http://localhost:4000/addtocart', {
+            await fetch(`${baseURL}/addtocart`, {
                 method: 'POST',
                 headers: {
                     Accept: "application/form-data",
@@ -90,53 +90,42 @@ const ShopContextProvider = (props) => {
                 body: JSON.stringify({"itemId": itemId})
             })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => setCartItems(data))
         }
     }
 
     const removeFromCart = (itemId) => {
         setCartItems((prev) => ({
             ...prev,
-            [itemId]: {
-                ...prev[itemId],
-                quantity: Math.max(0, (prev[itemId].quantity || 0) - 1)
-            }
+            [itemId]: prev[itemId] - 1
         }));
 
-        fetch('http://localhost:4000/removefromcart', {
+        fetch(`${baseURL}/removefromcart`, {
             method: 'POST',
             headers: {
                 Accept: "application/form-data",
                 "authToken": `${localStorage.getItem("authToken")}`,
-                "content-Type": "application/json" 
+                "Content-Type": "application/json" 
             },
             body: JSON.stringify({"itemId": itemId})
         })
         .then((res) => res.json())
-        .then((data) => console.log(data))
-    }
-
-    const setSizeForItem = (itemId, size) => {
-        setCartItems((prev) => ({
-            ...prev,
-            [itemId]: {
-                ...prev[itemId],
-                size
-            }
-        }));
+        .then((data) => setCartItems(data))
     }
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
         for (const item in cartItems) {
-            // console.log(item);
             if (cartItems[item] > 0) {
-                let itemInfo = all_product.find((product) => product.id === Number(item))
-                totalAmount += itemInfo.new_price * cartItems[item]
+                let itemInfo = all_product.find((product) => product.id === Number(item));
+                if (itemInfo) { 
+                    totalAmount += itemInfo.new_price * cartItems[item];
+                }
             }
         }
         return totalAmount;
-    }
+    };
+    
 
     useEffect(() => {
         const totalCount = Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
@@ -153,7 +142,6 @@ const ShopContextProvider = (props) => {
         cartCount,
         getTotalCartAmount,
         selectedSizes,
-        setSizeForItem,
         formatIndianNumber
     };
 

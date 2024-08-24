@@ -3,10 +3,12 @@ import { Item } from '../Item/Item'
 import { useNavigate } from 'react-router-dom'
 
 export const PopularItems = (props) => {
+  const baseURL = 'http://localhost:4000'
+
   const [popular, setpopular] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/popular/${props.name}`)
+    fetch(`${baseURL}/popular/${props.name}`)
     .then((res) => res.json())
     .then((data) => setpopular(data))
   }, [])

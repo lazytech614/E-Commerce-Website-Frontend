@@ -3,11 +3,12 @@ import new_collections from "../../constants/new_collections"
 import { Item } from '../Item/Item'
 
 export const NewCollections = () => {
+  const baseURL = 'http://localhost:4000'
 
   const [newCollections, setNewCollections] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/newcollections')
+    fetch(`${baseURL}/newcollections`)
     .then((res) => res.json())
     .then((data) => setNewCollections(data))
   }, [])

@@ -91,7 +91,7 @@ export const Navbar = () => {
                     </div>
                 </div>
             </header>
-            <SignUpModal isOpenSignUpModal={isOpenSignUpModal} setIsOpenSignUpModal={setIsOpenSignUpModal}/>
+            <SignUpModal isOpenSignUpModal={isOpenSignUpModal} setIsOpenSignUpModal={setIsOpenSignUpModal} setIsOpenSignInModal={setIsOpenSignInModal}/>
             <SignInModal isOpenSignInModal={isOpenSignInModal} setIsOpenSignInModal={setIsOpenSignInModal}/>
         </div>
     )

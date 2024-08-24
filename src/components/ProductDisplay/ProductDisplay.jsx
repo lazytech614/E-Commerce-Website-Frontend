@@ -8,13 +8,13 @@ import { SELECT_SIZE } from '../../constants/errorMessages';
 
 export const ProductDisplay = (props) => {
     const { product } = props;
-    const { addToCart, setSizeForItem, formatIndianNumber } = useContext(ShopContext);
+    const { addToCart, formatIndianNumber } = useContext(ShopContext);
     const [size, setSize] = useState("");
     const [errors, setErrors] = useState({});
 
     const handleClick = (selectedSize) => {
         setSize(selectedSize);
-        setSizeForItem(product.id, selectedSize); // Update size in context
+        // setSizeForItem(product.id, selectedSize); 
         setErrors((prevErrors) => ({
             ...prevErrors,
             size: ""

@@ -60,7 +60,7 @@ export const CartItems = () => {
                       <p>Rs. {formatIndianNumber(item.new_price)}</p>
                       <p>{cartItems[item.id].size}</p>
                       <button className='w-[64px] h-[52px] border-[2px] border-[#ebebeb]'>{cartItems[item.id]}</button>
-                      <p>Rs. {formatIndianNumber(item.new_price * cartItems[item.id].quantity)}</p>
+                      <p>Rs. {formatIndianNumber(item.new_price * cartItems[item.id])}</p>
                       <button onClick={() => removeFromCart(item.id)} className='w-[64px] h-[52px] bg-[#ff4141] text-white text-xl'>
                         -
                       </button>

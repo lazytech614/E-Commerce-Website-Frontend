@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 export const SignInForm = ({setIsOpenSignInModal}) => {
+  const baseURL = 'http://localhost:4000'
 
   const [formData, setFormData] = useState({
     phone: "",
@@ -36,7 +37,7 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
       return;
     }else{
       let responseData;
-      await fetch('http://localhost:4000/signin', {
+      await fetch(`${baseURL}/signin`, {
         method: 'POST',
         headers: {
           Accept: "application/form-data",
@@ -48,12 +49,10 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
       .then((data) => responseData = data)
 
       if(responseData.success){
-        console.log("User logged in succesfully");
         // toast.success("User logged in succesfully")
         localStorage.setItem("authToken", responseData.token);
         // window.location.replace("/");
       }else{
-        console.log(responseData.error);
         toast.error(responseData.error)
       }
       setIsOpenSignInModal(false)

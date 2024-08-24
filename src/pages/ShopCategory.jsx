@@ -8,15 +8,17 @@ import offer_banner_men_hero from '/offer_banner_men_hero.png'
 import offer_banner_women_hero from '/offer_banner_women_hero.png'
 import offer_banner_kids_hero from '/offer_banner_kids_hero.png'
 import CustomDropdown from '../components/CustomDropDown/CustomDropDown'
+import { OfferContext } from '../contexts/OfferContext'
 
 
 export const ShopCategory = (props) => {
+  const baseURL = 'http://localhost:4000'
 
   const [formData, setFormData] = useState({
     sort: "",
   })
   const [products, setProducts] = useState([])
-  const {randomOfferAmount, offerTimer} = useContext(ShopContext)
+  const {randomOfferAmount, offerTimer} = useContext(OfferContext)
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -24,7 +26,7 @@ export const ShopCategory = (props) => {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:4000/${props.category}`)
+    fetch(`${baseURL}/${props.category}`)
     .then((res) => res.json())
     .then((data) => setProducts(data))
   }, [props.category])
