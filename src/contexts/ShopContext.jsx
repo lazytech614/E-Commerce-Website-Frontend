@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
 const CART_STORAGE_KEY = import.meta.env.VITE_CART_ITEMS_KEY;
-const baseURL = 'http://localhost:4000'
+const baseURL = 'https://e-commerce-website-backend-uldm.onrender.com'
 
 export const ShopContext = createContext(null);
 
