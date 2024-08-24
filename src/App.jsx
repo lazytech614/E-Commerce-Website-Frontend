@@ -11,6 +11,8 @@ import men_banner from '/banner_mens.png'
 import women_banner from '/banner_women.png'
 import kids_banner from '/banner_kids.png'
 import { NewCollections } from './components/NewCollections/NewCollections';
+import { TermsAndConditions } from './pages/TermsAndConditions';
+import { PlaceOrder } from './pages/PlaceOrder';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
             <Route path=':productId' element={<Product />} />
           </Route>
           <Route path='/cart' element={<Cart />} />
+          <Route path='/placeorder' element={<PlaceOrder />} />
+          <Route path="/termsandconditions" element={<TermsAndConditions />} />
         </Routes>
         <Footer />
         <ToastContainer />

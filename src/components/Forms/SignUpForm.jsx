@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, EMAIL_REQUIRED, PASSWORD_REQUIRED, GENDER_REQUIRED, TERMS_AND_POLICY } from '../../constants/errorMessages'
 import CustomDropdown from '../CustomDropDown/CustomDropDown'
 import close_icon from '/red_close_icon.svg'
@@ -7,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const SignUpForm = ({setIsOpenSignUpModal, setIsOpenSignInModal}) => {
   const baseURL = 'http://localhost:4000'
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     name: "",
@@ -166,7 +168,7 @@ export const SignUpForm = ({setIsOpenSignUpModal, setIsOpenSignInModal}) => {
         <p onClick={handleClick} className='mt-[20px] text-[#5c5c5c] text-[10px] sm:text-[16px]'>Already have an account <span className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>sign in here</span></p>
         <div className='relative flex gap-2 items-start sm:items-center text-[#5c5c5c] text-[10px] sm:text-[16px]'>
           <input onChange={handleChange} className='mt-1 sm:mt-0 cursor-pointer' type='checkbox' name='checkbox' id='checkbox'/>
-          <p>By continuing, I agree to the <span className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>terms of use & privacy policy</span></p>
+          <p>By continuing, I agree to the <span onClick={() => {navigate("/termsandconditions"); setIsOpenSignUpModal(false)}} className='text-[#ff4141] font-semibold cursor-pointer sm:hover:underline'>terms of use & privacy policy</span></p>
           {errors.checkbox && (
             <span className='absolute bottom-[-16px] text-[10px] sm:text-[12px] text-[#ff4141]'>{errors.checkbox}</span>
           )}

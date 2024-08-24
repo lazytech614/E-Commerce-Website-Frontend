@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import { ShopContext } from '../../contexts/ShopContext';
 import remove_icon from '/cart_cross_icon.png';
 import empty_cart from '/Empty-cart.webp';
@@ -10,6 +11,7 @@ export const CartItems = () => {
     promoCode: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,7 +93,7 @@ export const CartItems = () => {
                   <p className='text-[#ff4141] font-semibold'>Rs. {formatIndianNumber(getTotalCartAmount())}</p>
                 </div>
               </div>
-              <button className='w-[262px] h-[58px] bg-[#ff4141] text-white font-semibold cursor-pointer'>Proceed to Checkout</button>
+              <button onClick={() => navigate('/placeorder')} className='w-[262px] h-[58px] bg-[#ff4141] text-white font-semibold cursor-pointer'>Proceed to Checkout</button>
             </div>
             <div className='w-[100%] relative'>
               <p className='text-[#555]'>If you have a promo code enter it here</p>
