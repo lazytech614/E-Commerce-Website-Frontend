@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import all_product from "../constants/all_product";
 
 const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 const TIME_INTERVAL_FOR_OFFER_CHANGE = Number(import.meta.env.VITE_TIME_INTERVAL_FOR_OFFER_CHANGE);
@@ -13,37 +12,10 @@ const getDefaultCart = () => {
         return storedCart;
     }
     let cart = {};
-    for (let i = 1; i < all_product.length + 1; i++) {
-        cart[i] = { quantity: 0, size: "not selected" }; // Initialize with size "not selected"
+    for (let i = 1; i < 10 + 1; i++) {
+        cart[i] = 0;
     }
     return cart;
-}
-
-const getRandomNumber = (min, max) => {
-    min = Math.ceil(min / 5) * 5;
-    max = Math.floor(max / 5) * 5;
-    return Math.floor(Math.random() * ((max - min) / 5 + 1)) * 5 + min;
-}
-
-const startOfferTimer = (endTime, setTimer) => {
-    const interval = setInterval(() => {
-        const now = Date.now();
-        const remainingTime = Math.max(0, Math.floor((endTime - now) / 1000));
-
-        const hours = Math.floor(remainingTime / 3600);
-        const minutes = Math.floor((remainingTime % 3600) / 60);
-        const seconds = Math.floor(remainingTime % 60);
-
-        setTimer(`${hours} hours ${minutes} minutes ${seconds} seconds`);
-
-        if (remainingTime <= 0) {
-            clearInterval(interval);
-            setTimer("Offer expired!");
-            localStorage.removeItem(STORAGE_KEY); 
-        }
-    }, 1000);
-
-    return interval;
 }
 
 function formatIndianNumber(number) {
@@ -67,25 +39,81 @@ const ShopContextProvider = (props) => {
     const [randomOfferAmount, setRandomOfferAmount] = useState(null);
     const [cartCount, setCartCount] = useState(0);
     const [selectedSizes, setSelectedSizes] = useState({});
+    const [all_product, setAll_Product] = useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/allproducts', { method: 'GET' });
+                const data = await response.json();
+                setAll_Product(data); // Set the products in state
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        fetchProducts();
+
+        const getCartData = () => {
+            fetch('http://localhost:4000/getcartdata', {
+                method: 'POST',
+                headers: {
+                    Accept: "application/form-data",
+                    "authToken": `${localStorage.getItem("authToken")}`,
+                    "Content-Type": "application/json"
+                },
+                body: ""
+            })
+            .then((res) => res.json())
+            .then((data) => setCartItems(data))
+        }
+        if(localStorage.getItem("authToken")){
+            getCartData()
+        }
+    }, []); 
 
     const addToCart = (itemId) => {
-        setCartItems((prev) => ({ 
-            ...prev, 
-            [itemId]: { 
-                ...prev[itemId], 
-                quantity: (prev[itemId].quantity || 0) + 1 
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: {
+                ...prev[itemId],
+                quantity: (prev[itemId].quantity || 0) + 1
             }
         }));
+        if(localStorage.getItem("authToken")){
+            fetch('http://localhost:4000/addtocart', {
+                method: 'POST',
+                headers: {
+                    Accept: "application/form-data",
+                    "authToken": `${localStorage.getItem("authToken")}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"itemId": itemId})
+            })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+        }
     }
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({ 
-            ...prev, 
-            [itemId]: { 
-                ...prev[itemId], 
-                quantity: Math.max(0, (prev[itemId].quantity || 0) - 1) 
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: {
+                ...prev[itemId],
+                quantity: Math.max(0, (prev[itemId].quantity || 0) - 1)
             }
         }));
+
+        fetch('http://localhost:4000/removefromcart', {
+            method: 'POST',
+            headers: {
+                Accept: "application/form-data",
+                "authToken": `${localStorage.getItem("authToken")}`,
+                "content-Type": "application/json" 
+            },
+            body: JSON.stringify({"itemId": itemId})
+        })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
     }
 
     const setSizeForItem = (itemId, size) => {
@@ -100,46 +128,18 @@ const ShopContextProvider = (props) => {
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
-        for(const item in cartItems){
-            if(cartItems[item].quantity > 0){
+        for (const item in cartItems) {
+            // console.log(item);
+            if (cartItems[item] > 0) {
                 let itemInfo = all_product.find((product) => product.id === Number(item))
-                totalAmount += itemInfo.new_price * cartItems[item].quantity
+                totalAmount += itemInfo.new_price * cartItems[item]
             }
         }
         return totalAmount;
     }
 
     useEffect(() => {
-        const now = Date.now();
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-        let initialRandomOfferAmount;
-        let endTime;
-
-        if (storedData && now < storedData.endTime) {
-            initialRandomOfferAmount = storedData.number;
-            endTime = storedData.endTime;
-        } else {
-            initialRandomOfferAmount = getRandomNumber(20, 80);
-            endTime = now + TIME_INTERVAL_FOR_OFFER_CHANGE;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                number: initialRandomOfferAmount,
-                timestamp: now,
-                endTime: endTime
-            }));
-        }
-
-        setRandomOfferAmount(initialRandomOfferAmount);
-        const intervalId = startOfferTimer(endTime, setOfferTimer);
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-        const totalCount = Object.values(cartItems).reduce((acc, item) => {
-            return acc + (item.quantity || 0);
-        }, 0);
+        const totalCount = Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
         setCartCount(totalCount);
     }, [cartItems]);
 
@@ -149,11 +149,11 @@ const ShopContextProvider = (props) => {
         addToCart,
         removeFromCart,
         randomOfferAmount,
-        offerTimer, 
+        offerTimer,
         cartCount,
         getTotalCartAmount,
         selectedSizes,
-        setSizeForItem, 
+        setSizeForItem,
         formatIndianNumber
     };
 

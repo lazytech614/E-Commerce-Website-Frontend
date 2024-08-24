@@ -9,7 +9,7 @@ export const Hero = () => {
   const navigate= useNavigate()
 
   const handleClick = () => {
-    navigate('/latestCollections')
+    navigate('/newcollections')
     window.scrollTo({
       top: 0,
       behavior: 'smooth'

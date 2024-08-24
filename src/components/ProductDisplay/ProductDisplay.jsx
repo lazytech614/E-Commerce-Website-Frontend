@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import star_icon from '/star_icon.png';
 import star_dull_icon from '/star_dull_icon.png';
 import { sizesList } from '../../constants/sizes';
@@ -35,7 +34,6 @@ export const ProductDisplay = (props) => {
             return;
         } else {
             addToCart(product.id);
-            toast.success("Product added to the cart");
         }
     }
 
@@ -72,18 +70,18 @@ export const ProductDisplay = (props) => {
                 <div className='relative my-4 lg:my-10'>
                     <p className='text-[#656565] text-[18px] lg:text-[20px] capitalize font-semibold'>select size</p>
                     <div className='flex flex-wrap gap-2 mt-2 uppercase'>
-                        {product.sizes.map((item) => (
+                        {product.sizes.map((item, index) => (
                             <div 
-                                key={item.id}
-                                onClick={() => handleClick(item.size)} 
+                                key={index}
+                                onClick={() => handleClick(item)} 
                                 className={`px-6 py-2 lg:text-[22px] font-semibold border-[2px] duration-300 cursor-pointer 
-                                    ${size === item.size 
+                                    ${size === item 
                                         ? 'bg-[#ff4141] text-white border-[#ff4141]' 
                                         : 'bg-[#fbfbfb] hover:bg-[#F0F0F0] border-[#ebebeb] hover:border-[#D9D9D9]'
                                     }
                                 `}
                             >
-                                {item.size}
+                                {item}
                             </div>
                         ))}
                     </div>
@@ -104,7 +102,6 @@ export const ProductDisplay = (props) => {
                     <p><span className='font-semibold'>Tag: </span>tag1, tag2, tag3</p>
                 </div>
             </div>
-            <ToastContainer />
         </div>
     );
 }

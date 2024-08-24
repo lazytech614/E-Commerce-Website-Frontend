@@ -51,7 +51,7 @@ export const CartItems = () => {
             </div>
             <div className='hidden lg:block w-[100%] h-[2px] bg-[#D9D9D9] my-2'></div>
             {all_product.map((item) => {
-              if (cartItems[item.id]?.quantity > 0) {
+              if (cartItems[item.id] > 0) {
                 return (
                   <div key={item.id}>
                     <div className='w-[260px] lg:w-auto grid lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr_1fr_1fr] items-center gap-[75px] text-gray-700'>
@@ -59,7 +59,7 @@ export const CartItems = () => {
                       <p>{item.name}</p>
                       <p>Rs. {formatIndianNumber(item.new_price)}</p>
                       <p>{cartItems[item.id].size}</p>
-                      <button className='w-[64px] h-[52px] border-[2px] border-[#ebebeb]'>{cartItems[item.id].quantity}</button>
+                      <button className='w-[64px] h-[52px] border-[2px] border-[#ebebeb]'>{cartItems[item.id]}</button>
                       <p>Rs. {formatIndianNumber(item.new_price * cartItems[item.id].quantity)}</p>
                       <button onClick={() => removeFromCart(item.id)} className='w-[64px] h-[52px] bg-[#ff4141] text-white text-xl'>
                         -

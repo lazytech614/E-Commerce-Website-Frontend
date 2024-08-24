@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, PASSWORD_REQUIRED } from '../../constants/errorMessages'
 import close_icon from '/red_close_icon.svg'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 export const SignInForm = ({setIsOpenSignInModal}) => {
 
   const [formData, setFormData] = useState({
@@ -46,10 +49,12 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
 
       if(responseData.success){
         console.log("User logged in succesfully");
+        // toast.success("User logged in succesfully")
         localStorage.setItem("authToken", responseData.token);
-        window.location.replace("/");
+        // window.location.replace("/");
       }else{
         console.log(responseData.error);
+        toast.error(responseData.error)
       }
       setIsOpenSignInModal(false)
     }
@@ -60,7 +65,7 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
         <div onClick={() => setIsOpenSignInModal(false)} className='w-[20px] sm:w-[30px] absolute right-[20px] sm:right-[40px] cursor-pointer'>
             <img className='w-full' src={close_icon} alt='cross' />
         </div>
-        <h1 className='text-center text-[22px] sm:text-[28px] text-[#171717] capitalize font-semibold'>sign in</h1>
+        <h1 className='text-center text-[22px] sm:text-[28px] text-[#171717] capitalize font-semibold'>log in</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-[20px] sm:gap-[30px] mt-[20px] bg-transparent'>
           <div className='relative'>
             <input 

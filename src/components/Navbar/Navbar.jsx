@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { ShopContext } from '../../contexts/ShopContext';
 import { SignUpModal } from '../Modal/SignUpModal';
 import { SignInModal } from '../Modal/SignInModal';
+import {toast } from 'react-toastify';
 
 
 export const Navbar = () => {
@@ -37,7 +38,7 @@ export const Navbar = () => {
     }
 
     const handleCartClick = () => {
-        navigate("/cart")
+        localStorage.getItem("authToken") ? navigate("/cart") : toast.error("Please log in first")
     }
 
     return (
@@ -68,15 +69,25 @@ export const Navbar = () => {
                     </ul>
                 </nav>
                 <div className='flex items-center gap-2 sm:gap-6'>
-                    <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151]  font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
-                        sign up
-                    </button>
-                    <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151]  font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
-                        sign in
-                    </button>
-                    <div onClick={handleCartClick} className='relative cursor-pointer '>
-                        <img className=' w-[30px]' src={cartIcon} alt='cart' />
-                        <span className='absolute top-[-2px] right-[-4px] bg-[red] text-white text-xs h-[18px] w-[18px] sm:h-[22px] sm:w-[22px] flex justify-center items-center rounded-full'>{cartCount}</span>
+                    {localStorage.getItem("authToken") ? (
+                        <button onClick={() => {localStorage.removeItem("authToken"); window.location.replace("/")}} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                            log out
+                        </button>
+                    ) : (
+                        <>
+                            <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                                sign up
+                            </button>
+                            <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                                log in
+                            </button>
+                        </>
+                    )}
+                    <div onClick={handleCartClick} className='relative cursor-pointer'>
+                        <img className='w-[30px]' src={cartIcon} alt='cart' />
+                        <span className='absolute top-[-2px] right-[-4px] bg-[red] text-white text-xs h-[18px] w-[18px] sm:h-[22px] sm:w-[22px] flex justify-center items-center rounded-full'>
+                            {cartCount}
+                        </span>
                     </div>
                 </div>
             </header>

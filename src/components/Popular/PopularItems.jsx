@@ -1,8 +1,15 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Item } from '../Item/Item'
 import { useNavigate } from 'react-router-dom'
 
 export const PopularItems = (props) => {
+  const [popular, setpopular] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/popular/${props.name}`)
+    .then((res) => res.json())
+    .then((data) => setpopular(data))
+  }, [])
 
   const navigate = useNavigate()
   const handleClick = () => {
@@ -22,7 +29,7 @@ export const PopularItems = (props) => {
         </div>
         <div className='w-[100%] h-[2px] bg-[#D9D9D9] '></div>
         <div className='grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 gap-y-6 mt-4 md:mt-8'>
-            {props.list.map((product) => (
+            {popular.map((product) => (
                 <Item 
                     key={product.id} 
                     id={product.id}

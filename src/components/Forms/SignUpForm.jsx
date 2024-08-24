@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react'
 import { PHONE_NUMBER_REQUIRED, FULL_NAME_REQUIRED, MINIMUM_LENGTH_PHONE, EMAIL_REQUIRED, PASSWORD_REQUIRED, GENDER_REQUIRED } from '../../constants/errorMessages'
 import CustomDropdown from '../CustomDropDown/CustomDropDown'
 import close_icon from '/red_close_icon.svg'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 export const SignUpForm = ({setIsOpenSignUpModal}) => {
 
   const [formData, setFormData] = useState({
@@ -55,10 +58,12 @@ export const SignUpForm = ({setIsOpenSignUpModal}) => {
 
       if(responseData.success){
         console.log("User logged in succesfully");
+        // toast.success("Account created succesfully")
         localStorage.setItem("authToken", responseData.token);
-        window.location.replace("/");
+        // window.location.replace("/");
       }else{
         console.log(responseData.error);
+        toast.error(responseData.error)
       }
       setIsOpenSignUpModal(false)
     }

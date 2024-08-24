@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import all_product from '../constants/all_product'
 import { ShopContext } from '../contexts/ShopContext'
 import dropdown_icon from '/dropdown_icon.png'
 import { Item } from '../components/Item/Item'
@@ -16,12 +15,19 @@ export const ShopCategory = (props) => {
   const [formData, setFormData] = useState({
     sort: "",
   })
-  const {all_product, randomOfferAmount, offerTimer} = useContext(ShopContext)
+  const [products, setProducts] = useState([])
+  const {randomOfferAmount, offerTimer} = useContext(ShopContext)
 
   const handleChange = (e) => {
     const {name, value} = e.target;
     setFormData({ ...formData, [name]: value })
   }
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/${props.category}`)
+    .then((res) => res.json())
+    .then((data) => setProducts(data))
+  }, [props.category])
 
   let heroIcon;
 
@@ -32,7 +38,7 @@ export const ShopCategory = (props) => {
     case 'women':
       heroIcon = offer_banner_women_hero;
       break;
-    case 'kid':
+    case 'kids':
       heroIcon = offer_banner_kids_hero;
       break;
   }
@@ -57,22 +63,16 @@ export const ShopCategory = (props) => {
           </div>
         </div>
         <div className='grid grid-cols-2 sm:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-8'>
-          {all_product.map((item) => {
-            if(props.category === item.category){
-              return (
-                <Item 
-                  key={item.id}
-                  id={item.id}
-                  name={item.name}
-                  image={item.image}
-                  newPrice={item.new_price}
-                  oldPrice={item.old_price}
-                />
-              )
-            }else{
-              return null
-            }
-          })}
+          {products.map((item) => (
+            <Item 
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            image={item.image}
+            newPrice={item.new_price}
+            oldPrice={item.old_price}
+          />
+          ))}
         </div>
         <div className='w-[120px] sm:w-[140px] md:w-[180px] lg:w-[234px] h-[40px] sm:h-[50px] md:h-[60px] lg:h-[70px] bg-[#ededed] hover:bg-black duration-300 rounded-[40px] border border-[#171717] sm:rounded-[80px] text-[#171717] hover:text-white text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] flex items-center justify-center ml-auto mt-[40px] cursor-pointer'>
           Explore More
