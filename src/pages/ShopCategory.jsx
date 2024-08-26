@@ -12,7 +12,7 @@ import { OfferContext } from '../contexts/OfferContext'
 
 
 export const ShopCategory = (props) => {
-  const baseURL = 'https://e-commerce-website-backend-30l8.onrender.com'
+  const baseURL = 'https://e-commerce-website-backend-bicr.onrender.com'
 
   const [formData, setFormData] = useState({
     sort: "",

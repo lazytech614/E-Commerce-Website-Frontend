@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 export const SignInForm = ({setIsOpenSignInModal}) => {
-  const baseURL = 'https://e-commerce-website-backend-30l8.onrender.com'
+  const baseURL = 'https://e-commerce-website-backend-bicr.onrender.com'
 
   const [formData, setFormData] = useState({
     phone: "",
@@ -51,11 +51,11 @@ export const SignInForm = ({setIsOpenSignInModal}) => {
       if(responseData.success){
         // toast.success("User logged in succesfully")
         localStorage.setItem("authToken", responseData.token);
+        setIsOpenSignInModal(false)
         // window.location.replace("/");
       }else{
         toast.error(responseData.error)
       }
-      setIsOpenSignInModal(false)
     }
   }
 

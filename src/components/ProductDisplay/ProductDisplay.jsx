@@ -33,7 +33,11 @@ export const ProductDisplay = (props) => {
             setErrors(newErrors);
             return;
         } else {
-            addToCart(product.id);
+            if(localStorage.getItem("authToken")){
+                addToCart(product.id);
+            }else{
+                toast.info("Please log in to your account")
+            }
         }
     }
 
