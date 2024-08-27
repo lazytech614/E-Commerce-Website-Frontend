@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 export const SignUpForm = ({setIsOpenSignUpModal, setIsOpenSignInModal}) => {
-  const baseURL = 'https://e-commerce-website-backend-bicr.onrender.com'
+  const baseURL = 'https://e-commerce-website-backend-sandy.vercel.app/'
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({

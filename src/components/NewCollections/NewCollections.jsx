@@ -3,7 +3,7 @@ import new_collections from "../../constants/new_collections"
 import { Item } from '../Item/Item'
 
 export const NewCollections = () => {
-  const baseURL = 'https://e-commerce-website-backend-bicr.onrender.com'
+  const baseURL = 'https://e-commerce-website-backend-sandy.vercel.app/'
 
   const [newCollections, setNewCollections] = useState([]);
 
