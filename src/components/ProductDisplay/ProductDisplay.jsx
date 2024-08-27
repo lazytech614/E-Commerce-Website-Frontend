@@ -65,8 +65,8 @@ export const ProductDisplay = (props) => {
                     <p>(122)</p>
                 </div>
                 <div className='flex gap-2 lg:mt-2 text-[24px] font-bold'>
-                    <div className='line-through text-[#8c8c8c]'>{formatIndianNumber(product.old_price)}</div>
-                    <div className='text-[#ff4141]'>Rs. {formatIndianNumber(product.new_price)}</div>
+                    <div className='line-through text-[#8c8c8c]'>{formatIndianNumber(product.new_price)}</div>
+                    <div className='text-[#ff4141]'>Rs. {formatIndianNumber(product.old_price)}</div>
                 </div>
                 <div className='mt-4 lg:mt-8'>
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto necessitatibus esse accusantium, error sed exercitationem nesciunt inventore beatae optio officiis vero sequi quisquam, nulla ut ipsam recusandae? Reiciendis, veniam eveniet?
