@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom'
 export const PopularItems = (props) => {
   const baseURL = 'https://e-commerce-website-backend-bicr.onrender.com'
 
-  const [popular, setpopular] = useState([]);
+  const [popular, setPopular] = useState([]);
 
   useEffect(() => {
     fetch(`${baseURL}/popular/${props.name}`)
     .then((res) => res.json())
-    .then((data) => setpopular(data))
+    .then((data) => setPopular(data))
   }, [])
 
   const navigate = useNavigate()
