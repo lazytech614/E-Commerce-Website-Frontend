@@ -21,8 +21,8 @@ export const Item = (props) => {
         <img src={props.image} alt='image' />
         <p className='my-2 text-[12px] md:text-[16px] text-[#171717] font-medium'>{props.name}</p>
         <div className='flex gap-2 md:gap-4 text-[12px] md:text-[18px] '>
-          <p className='text-[#ff4141] font-semibold'>Rs. {formatIndianNumber(props.newPrice)}</p>
-          <p className='text-[#8c8c8c] font-medium line-through'>{formatIndianNumber(props.oldPrice)}</p>
+          <p className='text-[#ff4141] font-semibold'>Rs. {formatIndianNumber(props.oldPrice)}</p>
+          <p className='text-[#8c8c8c] font-medium line-through'>{formatIndianNumber(props.newPrice)}</p>
         </div>
       </div>
     </div>
