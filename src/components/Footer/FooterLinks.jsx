@@ -14,11 +14,26 @@ export const FooterLinks = () => {
             </div>
             <div className='flex flex-col sm:items-end gap-4 sm:gap-2'>
                 <ul className='capitalize sm:flex gap-2 lg:gap-4 text-[#252525] text-[12px] sm:text-[14px] lg:text-[20px]'>
-                    <li className='cursor-pointer sm:hover:text-[#ff4141] duration-200 sm:hover:scale-95'>company</li>
-                    <li className='cursor-pointer sm:hover:text-[#ff4141] duration-200 sm:hover:scale-95'>products</li>
-                    <li className='cursor-pointer sm:hover:text-[#ff4141] duration-200 sm:hover:scale-95'>offices</li>
-                    <li className='cursor-pointer sm:hover:text-[#ff4141] duration-200 sm:hover:scale-95'>about</li>
-                    <li className='cursor-pointer sm:hover:text-[#ff4141] duration-200 sm:hover:scale-95'>contact</li>
+                    <li className='relative cursor-pointer overflow-x-hidden group'>
+                        <div className='absolute bottom-0 left-[-100%] sm:group-hover:left-0 transition-all duration-300 h-[2px] bg-[#171717] w-full'></div>
+                        company
+                    </li>
+                    <li className='relative cursor-pointer overflow-x-hidden group'>
+                        <div className='absolute bottom-0 left-[-100%] sm:group-hover:left-0 transition-all duration-300 h-[2px] bg-[#171717] w-full'></div>
+                        products
+                    </li>
+                    <li className='relative cursor-pointer overflow-x-hidden group'>
+                        <div className='absolute bottom-0 left-[-100%] sm:group-hover:left-0 transition-all duration-300 h-[2px] bg-[#171717] w-full'></div>
+                        offices
+                    </li>
+                    <li className='relative cursor-pointer overflow-x-hidden group'>
+                        <div className='absolute bottom-0 left-[-100%] sm:group-hover:left-0 transition-all duration-300 h-[2px] bg-[#171717] w-full'></div>
+                        about
+                    </li>
+                    <li className='relative cursor-pointer overflow-x-hidden group'>
+                        <div className='absolute bottom-0 left-[-100%] sm:group-hover:left-0 transition-all duration-300 h-[2px] bg-[#171717] w-full'></div>
+                        contact
+                    </li>
                 </ul>
                 <div className='flex items-center gap-4'>
                     <div className='cursor-pointer'>

@@ -34,7 +34,8 @@ export const ProductDisplay = (props) => {
             return;
         } else {
             if(localStorage.getItem("authToken")){
-                addToCart(product.id);
+                addToCart(product.id, size);
+                // console.log(size);
             }else{
                 toast.info("Please log in to your account")
             }
@@ -77,7 +78,7 @@ export const ProductDisplay = (props) => {
                         {product.sizes.map((item, index) => (
                             <div 
                                 key={index}
-                                onClick={() => handleClick(item)} 
+                                onClick={() => {handleClick(item); setSize(item)}} 
                                 className={`px-6 py-2 lg:text-[22px] font-semibold border-[2px] duration-300 cursor-pointer 
                                     ${size === item 
                                         ? 'bg-[#ff4141] text-white border-[#ff4141]' 

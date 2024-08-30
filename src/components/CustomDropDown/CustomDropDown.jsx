@@ -18,7 +18,7 @@ const CustomDropdown = ({ options, value, onChange, placeholder, className }) =>
         {value ? value : <span className="text-[#9CA3AF]">{placeholder}</span>}
       </div>
       {isOpen && (
-        <div className="absolute top-full left-0 w-full border border-[#c9c9c9] bg-white z-10">
+        <div className="absolute top-full left-0 w-full border border-[#c9c9c9] bg-white z-10 max-h-[200px] overflow-y-auto">
           {options.map((option) => (
             <div
               key={option.value}

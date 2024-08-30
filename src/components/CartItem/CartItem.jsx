@@ -1,17 +1,15 @@
 import React, { useContext, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../../contexts/ShopContext';
-import remove_icon from '/cart_cross_icon.png';
-import empty_cart from '/Empty-cart.webp';
+import remove_icon from '/cart_cross_icon.png'; // Ensure this image path is correct
+import empty_cart from '/Empty-cart.webp'; // Ensure this image path is correct
 import { ENTER_THE_PROMO_CODE_FIRST } from '../../constants/errorMessages';
 
 export const CartItems = () => {
   const { all_product, getTotalCartAmount, cartItems, removeFromCart, cartCount, formatIndianNumber } = useContext(ShopContext);
-  const [formData, setFormData] = useState({
-    promoCode: "",
-  });
+  const [formData, setFormData] = useState({ promoCode: "" });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,18 +51,19 @@ export const CartItems = () => {
             </div>
             <div className='hidden lg:block w-[100%] h-[2px] bg-[#D9D9D9] my-2'></div>
             {all_product.map((item) => {
-              if (cartItems[item.id] > 0) {
+              const cartItem = cartItems.find(cartItem => cartItem.productId === item.id);
+              if (cartItem && cartItem.quantity > 0) {
                 return (
                   <div key={item.id}>
                     <div className='w-[260px] lg:w-auto grid lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr_1fr_1fr] items-center gap-[75px] text-gray-700'>
-                      <img className='w-[64px]' src={item.image} alt='image' />
+                      <img className='w-[64px]' src={item.image} alt='product' />
                       <p>{item.name}</p>
                       <p>Rs. {formatIndianNumber(item.new_price)}</p>
-                      <p>{cartItems[item.id].size}</p>
-                      <button className='w-[64px] h-[52px] border-[2px] border-[#ebebeb]'>{cartItems[item.id]}</button>
-                      <p>Rs. {formatIndianNumber(item.new_price * cartItems[item.id])}</p>
+                      <p>{cartItem.size}</p>
+                      <button className='w-[64px] h-[52px] border-[2px] border-[#ebebeb]'>{cartItem.quantity}</button>
+                      <p>Rs. {formatIndianNumber(item.new_price * cartItem.quantity)}</p>
                       <button onClick={() => removeFromCart(item.id)} className='w-[64px] h-[52px] bg-[#ff4141] text-white text-xl'>
-                        -
+                        X
                       </button>
                     </div>
                     <div className='hidden lg:block w-[100%] h-[2px] bg-[#D9D9D9] my-2'></div>

@@ -13,6 +13,7 @@ import kids_banner from '/banner_kids.png'
 import { NewCollections } from './components/NewCollections/NewCollections';
 import { TermsAndConditions } from './pages/TermsAndConditions';
 import { PlaceOrder } from './pages/PlaceOrder';
+import { Payment } from './pages/Payment';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           </Route>
           <Route path='/cart' element={<Cart />} />
           <Route path='/placeorder' element={<PlaceOrder />} />
+          <Route path='/payment' element={<Payment />} />
           <Route path="/termsandconditions" element={<TermsAndConditions />} />
         </Routes>
         <Footer />

@@ -12,7 +12,7 @@ import { OfferContext } from '../contexts/OfferContext'
 
 
 export const ShopCategory = (props) => {
-  const baseURL = 'https://e-commerce-website-backend-sandy.vercel.app/'
+  const baseURL = 'http://localhost:4000'
 
   const [formData, setFormData] = useState({
     sort: "",

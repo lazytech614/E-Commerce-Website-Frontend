@@ -46,7 +46,7 @@ export const Navbar = () => {
             {isSidebarOpen && (
                 <Sidebar handleToggleMenuClick={handleToggleMenuClick} navItem={navItem} handleNavItemClick={handleNavItemClick}/>
             )}  
-            <header className='sticky top-0 custom-backdrop flex justify-between items-center px-4 sm:px-10 md:px-20 py-2 sm:py-4 shadow-custom'>
+            <header className='sticky top-0 custom-backdrop flex justify-between items-center px-4 sm:px-10  py-2 sm:py-4 shadow-custom'>
                 <div className='flex items-center gap-2 sm:gap-4'>
                     <IoIosMenu onClick={handleToggleMenuClick} className='lg:hidden text-[30px] sm:text-[40px] cursor-pointer'/>
                     <Link to="/" onClick={() => handleNavItemClick("Shop")} className='flex items-end gap-2 cursor-pointer'>
@@ -70,15 +70,15 @@ export const Navbar = () => {
                 </nav>
                 <div className='flex items-center gap-2 sm:gap-6'>
                     {localStorage.getItem("authToken") ? (
-                        <button onClick={() => {localStorage.removeItem("authToken"); window.location.replace("/")}} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                        <button onClick={() => {localStorage.removeItem("authToken"); window.location.replace("/")}} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
                             log out
                         </button>
                     ) : (
                         <>
-                            <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                            <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
                                 sign up
                             </button>
-                            <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl active:bg-[#f3f3f3] capitalize'>
+                            <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
                                 log in
                             </button>
                         </>
