@@ -116,6 +116,7 @@ export const PlaceOrder = () => {
         sessionId: session.id
       });
 
+
       if(result.error){
         console.log("Error", result.error);
       }

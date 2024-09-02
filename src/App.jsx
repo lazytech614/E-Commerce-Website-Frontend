@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import { Navbar } from './components/Navbar/Navbar'
 import { Shop } from './pages/Shop'
@@ -13,7 +12,8 @@ import kids_banner from '/banner_kids.png'
 import { NewCollections } from './components/NewCollections/NewCollections';
 import { TermsAndConditions } from './pages/TermsAndConditions';
 import { PlaceOrder } from './pages/PlaceOrder';
-import { Payment } from './pages/Payment';
+import Success from './components/PaymentRedirect/Success';
+import Cancel from './components/PaymentRedirect/Cancel';
 
 function App() {
   return (
@@ -31,7 +31,8 @@ function App() {
           </Route>
           <Route path='/cart' element={<Cart />} />
           <Route path='/placeorder' element={<PlaceOrder />} />
-          <Route path='/payment' element={<Payment />} />
+          <Route path='/success' element={<Success />} />
+          <Route path='/cancel' element={<Cancel />} />
           <Route path="/termsandconditions" element={<TermsAndConditions />} />
         </Routes>
         <Footer />
