@@ -22,7 +22,7 @@ export const Hero = () => {
         <p className="uppercase text-[14px] sm:text-[22px] lg:text-[26px] text-[#090909] font-semibold">
           new arrivals only
         </p>
-        <div className="text-[26px] sm:text-[60px] lg:text-[100px] text-[#171717] font-semibold leading-[25px] sm:leading-[60px] lg:leading-[100px]">
+        <div className="uppercase text-[26px] sm:text-[60px] lg:text-[100px] text-[#171717] font-bold leading-[25px] sm:leading-[60px] lg:leading-[100px]">
           <div className="flex items-center">
             <p>new</p>
             <img className="w-[30px] sm:w-[60px] lg:w-[105px]" src={hand_icon} alt="" />

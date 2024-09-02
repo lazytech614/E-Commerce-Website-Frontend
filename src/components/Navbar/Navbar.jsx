@@ -59,8 +59,8 @@ export const Navbar = () => {
                         {navItems.map((item) => (
                             <li key={item.id}>
                                 <Link to={item.text.toLocaleLowerCase()}>
-                                    <button onClick={() => handleNavItemClick(item.text)} className={`group relative ${navItem === item.text ? "text-[#ff4141] font-semibold" : ""} overflow-x-hidden`}>
-                                        <div className={`h-[2px] w-full absolute bottom-0 ${navItem === item.text ? "left-0" : "left-[-100%]"}  sm:group-hover:left-0 transition-all duration-300 bg-[#ff4141] `}></div>
+                                    <button onClick={() => handleNavItemClick(item.text)} className={`group relative ${navItem === item.text ? "text-[#ff4141] font-semibold" : "hover:text-[#171717]"} overflow-x-hidden`}>
+                                        <div className={`h-[2px] w-full absolute bottom-0 ${navItem === item.text ? "bg-[#ff4141] left-0" : "bg-[#171717] left-[-100%]"}  sm:group-hover:left-0 transition-all duration-300  `}></div>
                                         {item.text}
                                     </button>
                                 </Link>
@@ -70,15 +70,15 @@ export const Navbar = () => {
                 </nav>
                 <div className='flex items-center gap-2 sm:gap-6'>
                     {localStorage.getItem("authToken") ? (
-                        <button onClick={() => {localStorage.removeItem("authToken"); window.location.replace("/")}} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
+                        <button onClick={() => {localStorage.removeItem("authToken"); window.location.replace("/")}} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-md hover:rounded-3xl duration-300 capitalize'>
                             log out
                         </button>
                     ) : (
                         <>
-                            <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
+                            <button onClick={handleSignUpClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-md hover:rounded-3xl duration-300 capitalize'>
                                 sign up
                             </button>
-                            <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-3xl capitalize'>
+                            <button onClick={handleSignInClick} className='sm:text-[20px] text-[#515151] font-medium px-4 py-1 sm:px-8 sm:py-2 border border-[#7a7a7a] rounded-md hover:rounded-3xl duration-300 capitalize'>
                                 log in
                             </button>
                         </>
