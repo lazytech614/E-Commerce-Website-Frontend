@@ -92,7 +92,14 @@ export const CartItems = () => {
                   <p className='text-[#ff4141] font-semibold'>Rs. {formatIndianNumber(getTotalCartAmount())}</p>
                 </div>
               </div>
-              <button onClick={() => navigate('/placeorder')} className='w-[262px] h-[58px] bg-[#ff4141] text-white font-semibold cursor-pointer'>Proceed to Checkout</button>
+              <button onClick={() => {
+                navigate('/placeorder'); window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                })}} 
+                className='w-[262px] h-[58px] bg-[#ff4141] text-white font-semibold cursor-pointer'>
+                  Proceed to Checkout
+              </button>
             </div>
             <div className='w-[100%] relative'>
               <p className='text-[#555]'>If you have a promo code enter it here</p>

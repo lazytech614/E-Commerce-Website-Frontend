@@ -16,10 +16,11 @@ import {
   PHONE_NUMBER_REQUIRED,
   MINIMUM_LENGTH_PHONE
 } from '../constants/errorMessages';
+import {loadStripe} from '@stripe/stripe-js'
 
 export const PlaceOrder = () => {
   const baseURL = "http://localhost:4000";
-  const { getTotalCartAmount, formatIndianNumber, cartItems } = useContext(ShopContext);
+  const { getTotalCartAmount, formatIndianNumber, cartItems, all_product } = useContext(ShopContext);
   
   const [formData, setFormData] = useState({
     fName: "",
@@ -32,7 +33,15 @@ export const PlaceOrder = () => {
     country: "",
     phone: "",
     total: "",
-    items: [] // Initialize as an empty array
+    items: [
+      {
+        productId: "",
+        name: "",
+        quantity: "",
+        size: "",
+        price: ""
+      }
+    ] // Initialize as an empty array
   });
   const [shippingFee, setShippingFee] = useState(0);
   const [errors, setErrors] = useState({});
@@ -65,33 +74,54 @@ export const PlaceOrder = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    // console.log(formData);
-    fetch(`${baseURL}/payment`, {
-      method: 'POST',
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        authtoken: localStorage.getItem("authToken"),
-      },
-      body: JSON.stringify(formData)
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Order placed successfully");
-        navigate('/payment'); 
-      } else {
-        console.log("Order placement failed");
+    
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_API_KEY)
+
+    if(!stripe){
+      console.error("Failed to load stripe");
+      return;
+    }
+
+    const body = {
+      products: formData.items
+    }
+
+    const headers = {
+      authToken: localStorage.getItem("authToken"),
+      "Content-Type": "application/json"
+    }
+
+    try{
+      const response = await fetch('http://localhost:4000/payment', {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+      });
+
+      const session = await response.json();
+
+      if(!session.id){
+        console.log("Session id not found");
+        return;
       }
-    })
-    .catch((err) => console.error("Error placing order:", err));
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id
+      });
+
+      if(result.error){
+        console.log("Error", result.error);
+      }
+    }catch(err){
+      console.log("Error processing the payment", err);
+    }
   };
 
   useEffect(() => {
@@ -102,16 +132,24 @@ export const PlaceOrder = () => {
   // Update items based on cartItems
   useEffect(() => {
     const itemsInCart = cartItems.filter(item => item.quantity > 0);
-    setFormData(prevData => ({ ...prevData, items: itemsInCart }));
-  }, [cartItems]);
 
+    const updatedItems = itemsInCart.map((item) => {
+      const product = all_product.find(p => p.id === item.productId); // Assuming item.id matches with product.id
+      return {
+        ...item,
+        price: product ? product.new_price : 0, // Set price from all_product or default to 0 if not found
+        name: product ? product.name : "Unknown Product" // Set name from all_product or default if not found
+      };
+    });
+  
+    setFormData(prevData => ({ ...prevData, items: updatedItems }));
+  }, [cartItems, all_product]);
+  
   return (
     <div className='min-h-[90vh] px-4 sm:px-10 md:px-20 py-2 my-10 lg:my-0 flex items-center justify-center'>
       <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row w-full justify-between items-center lg:items-start gap-x-20 gap-y-10 text-[12px] sm:text-[16px]'>
-        {/* Delivery Information Section */}
         <div className='flex flex-col gap-y-6 w-full lg:w-[50%]'>
           <span className='text-[20px] sm:text-[36px] font-semibold capitalize mb-2 md:mb-10'>Delivery informations</span>
-          {/* First and Last Name */}
           <div className='flex gap-4'>
             <div className='w-[50%] relative'>
               <input

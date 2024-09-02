@@ -59,9 +59,9 @@ export const Navbar = () => {
                         {navItems.map((item) => (
                             <li key={item.id}>
                                 <Link to={item.text.toLocaleLowerCase()}>
-                                    <button onClick={() => handleNavItemClick(item.text)} className={`relative ${navItem === item.text ? "text-[#ff4141] font-semibold" : ""}`}>
-                                    {item.text}
-                                    <hr className={`absolute bottom-[-6px] left-[50%] translate-x-[-50%] w-[80%] h-[3px] rounded-[10px] bg-[#FF4141] ${navItem === item.text ? "block" : "hidden"}`}/>
+                                    <button onClick={() => handleNavItemClick(item.text)} className={`group relative ${navItem === item.text ? "text-[#ff4141] font-semibold" : ""} overflow-x-hidden`}>
+                                        <div className={`h-[2px] w-full absolute bottom-0 ${navItem === item.text ? "left-0" : "left-[-100%]"}  sm:group-hover:left-0 transition-all duration-300 bg-[#ff4141] `}></div>
+                                        {item.text}
                                     </button>
                                 </Link>
                             </li>
